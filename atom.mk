@@ -164,3 +164,25 @@ LOCAL_COPY_FILES := \
 	utils/ldc:usr/bin/ldc
 
 include $(BUILD_CUSTOM)
+
+################################################################################
+# file_led_driver
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := file_led_driver
+LOCAL_DESCRIPTION := Virtual led driver with a file backend
+LOCAL_CATEGORY_PATH := tools/ledd/drivers
+LOCAL_DESTDIR := usr/lib/ledd-plugins
+
+LOCAL_SRC_FILES := \
+	ledd_plugins/drivers/file_led_driver.c
+
+LOCAL_LIBRARIES := \
+	libulog \
+	libutils \
+	librs \
+	ledd_plugin
+
+include $(BUILD_LIBRARY)
