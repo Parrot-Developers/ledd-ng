@@ -147,3 +147,20 @@ LOCAL_LIBRARIES := \
 	librs
 
 include $(BUILD_LIBRARY)
+
+################################################################################
+# ldc
+################################################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ldc
+LOCAL_DESCRIPTION := Command line interface for ldc
+LOCAL_CATEGORY_PATH := tools/ledd
+
+LOCAL_REQUIRED_MODULES := ledd \
+	pomp-cli
+
+LOCAL_COPY_FILES := \
+	utils/ldc:usr/bin/ldc
+
+include $(BUILD_CUSTOM)

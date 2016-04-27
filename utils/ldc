@@ -1,0 +1,92 @@
+#!/bin/sh
+
+set -eu
+
+MSG_SET_PATTERN=0
+MSG_QUIT=1
+MSG_DUMP_CONFIG=2
+MSG_SET_VALUE=3
+
+address=unix:@ledd.socket
+
+usage() {
+	cat <<usage_here_document
+Command-line client for the ledd daemon
+Usage : ldc [options] set_pattern pattern resume
+                 resume can be "true" or "false", if true, once the current
+                 pattern is finished, the previous one will resume where it was
+                 stopped, if false, the previous pattern is discarded
+        ldc [options] quit
+                 asks the ledd daemon to quit
+        ldc [options] dump_config patterns|platform|global
+                 dumps (partially) the result of the parsing of one of the 3
+                 ledd configuration files, "patterns" will ask to dump
+                 the patterns.conf file (usually /etc/ledd/patterns.conf) and so
+                 on...
+        ldc [options] set_value led_id channel_id value
+                 set a led's channel to a given value, regardless of the current
+                 led pattern being played, if any, note that this is a debug
+                 operation and that patterns and manual values can conflict in
+                 unexpected ways
+        options:
+            -v make the output verbose, i.e., dumps pomp-cli's output
+usage_here_document
+}
+
+if [ -z "${1+x}" ]
+then
+	usage
+	exit
+fi
+
+V=0
+if [ "$1" = "-v" ]; then
+	V=1
+	shift
+fi
+
+if [ -z "${1+x}" ]
+then
+	usage
+	exit
+fi
+command=$1
+pomp_cli_cmd="pomp-cli --timeout 2 ${address}"
+
+case "${command}" in
+	help|-h|-?|--help)
+		usage
+		exit 0
+		;;
+	set_pattern)
+		pattern=$2
+		resume=$3
+		res=$(${pomp_cli_cmd} ${MSG_SET_PATTERN} "%s%s" "$pattern" "$resume" 2>&1)
+		;;
+	quit)
+		res=$(${pomp_cli_cmd} ${MSG_QUIT} "" "" 2>&1)
+		;;
+	dump_config)
+		config=$2
+		res=$(${pomp_cli_cmd} ${MSG_DUMP_CONFIG} "%s" "$config" 2>&1)
+		;;
+	set_value)
+		led=$2
+		channel=$3
+		value=$4
+		res=$(${pomp_cli_cmd} ${MSG_SET_VALUE} "%s%s%u" "$led" "$channel" \
+				"$value" 2>&1)
+		;;
+	*)
+		usage
+		exit 1
+		;;
+esac
+
+[ "$res" != "POMPCLI: Timeout !" ] || exit 2
+
+if [ "$V" -ge 1 ]; then
+	echo "$res"
+fi
+
+exit 0
