@@ -209,3 +209,26 @@ LOCAL_LIBRARIES := \
 
 include $(BUILD_LIBRARY)
 
+################################################################################
+# socket_led_driver
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := socket_led_driver
+LOCAL_DESCRIPTION := Driver sending channel values over a socket
+LOCAL_CATEGORY_PATH := tools/ledd/drivers
+LOCAL_DESTDIR := usr/lib/ledd-plugins
+
+LOCAL_SRC_FILES := \
+	ledd_plugins/drivers/socket_led_driver.c
+
+LOCAL_LIBRARIES := \
+	libulog \
+	libutils \
+	librs \
+	libpomp \
+	ledd_plugin
+
+include $(BUILD_LIBRARY)
+
