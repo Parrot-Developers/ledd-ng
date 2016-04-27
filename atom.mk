@@ -254,3 +254,22 @@ LOCAL_LIBRARIES := \
 
 include $(BUILD_LIBRARY)
 
+################################################################################
+# flicker_transition
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := flicker_transition
+LOCAL_DESCRIPTION := Ledd animation transition for making flickering a channel
+LOCAL_CATEGORY_PATH := tools/ledd/transitions
+LOCAL_DESTDIR := usr/lib/ledd-plugins
+
+LOCAL_SRC_FILES := \
+	ledd_plugins/transitions/flicker_transition.c
+
+LOCAL_LIBRARIES := \
+	libulog \
+	ledd_plugin
+
+include $(BUILD_LIBRARY)
