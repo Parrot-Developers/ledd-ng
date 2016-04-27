@@ -186,3 +186,26 @@ LOCAL_LIBRARIES := \
 	ledd_plugin
 
 include $(BUILD_LIBRARY)
+
+################################################################################
+# pwm_led_driver
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := pwm_led_driver
+LOCAL_DESCRIPTION := Driver using the kernel's pwm facility
+LOCAL_CATEGORY_PATH := tools/ledd/drivers
+LOCAL_DESTDIR := usr/lib/ledd-plugins
+
+LOCAL_SRC_FILES := \
+	ledd_plugins/drivers/pwm_led_driver.c
+
+LOCAL_LIBRARIES := \
+	libulog \
+	libutils \
+	librs \
+	ledd_plugin
+
+include $(BUILD_LIBRARY)
+
