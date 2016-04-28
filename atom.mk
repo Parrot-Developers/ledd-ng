@@ -255,6 +255,30 @@ LOCAL_LIBRARIES := \
 include $(BUILD_LIBRARY)
 
 ################################################################################
+# tricolor_led_driver
+################################################################################
+
+include $(CLEAR_VARS)
+
+# the zzz_ prefix is used to force this plugin being loaded last, this way, we
+# guarantee it can reference any driver loaded before
+LOCAL_MODULE := zzz_tricolor_led_driver
+LOCAL_DESCRIPTION := Driver for tricolor leds
+LOCAL_CATEGORY_PATH := tools/ledd/drivers
+LOCAL_DESTDIR := usr/lib/ledd-plugins
+
+LOCAL_SRC_FILES := \
+	ledd_plugins/drivers/tricolor_led_driver.c
+
+LOCAL_LIBRARIES := \
+	libulog \
+	libutils \
+	librs \
+	ledd_plugin
+
+include $(BUILD_LIBRARY)
+
+################################################################################
 # flicker_transition
 ################################################################################
 
