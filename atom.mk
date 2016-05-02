@@ -297,3 +297,25 @@ LOCAL_LIBRARIES := \
 	ledd_plugin
 
 include $(BUILD_LIBRARY)
+
+################################################################################
+# read_hsis
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := read_hsis
+LOCAL_DESCRIPTION := Ledd animation transition for making flickering a channel
+LOCAL_CATEGORY_PATH := tools/ledd/lua_globals
+LOCAL_DESTDIR := usr/lib/ledd-plugins
+
+LOCAL_SRC_FILES := \
+	ledd_plugins/lua_globals/read_hsis.c
+
+LOCAL_LIBRARIES := \
+	libulog \
+	liblua \
+	libutils \
+	ledd_plugin
+
+include $(BUILD_LIBRARY)
