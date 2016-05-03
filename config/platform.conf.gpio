@@ -1,0 +1,13 @@
+-- example platform config file for a product where a one channel, blue led is
+-- wired to the gpio 408 (tested on a c.h.i.p.)
+
+leds = {
+	main = {
+		driver = "gpio",
+		channels = {
+			blue = {
+				parameters = "408",
+			},
+		},
+	},
+}

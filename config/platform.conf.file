@@ -1,0 +1,21 @@
+-- example platform configuration for writing led channel values in a file, can
+-- be used for testing ledd
+
+leds = {
+	pitot = {
+		driver = "file",
+		channels = {
+			red = {
+				-- the parameter is only used as a label to retrieve the channel in the
+				-- file
+				parameters = "R",
+			},
+			green = {
+				parameters = "G",
+			},
+			blue = {
+				parameters = "B",
+			},
+		},
+	},
+}
