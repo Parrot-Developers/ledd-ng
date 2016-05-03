@@ -78,6 +78,9 @@ LOCAL_EXPORT_C_INCLUDES := \
 
 LOCAL_EXPORT_CFLAGS := -DLEDD_SKIP_PLUGINS=false
 
+LOCAL_COPY_FILES := \
+	config/20-ledd.rc:etc/boxinit.d/
+
 include $(BUILD_LIBRARY)
 
 ################################################################################

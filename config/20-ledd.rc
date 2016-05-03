@@ -1,0 +1,5 @@
+service ledd /usr/bin/ledd
+    setenv ULOG_LEVEL D
+    class main
+    user root
+    disabled
