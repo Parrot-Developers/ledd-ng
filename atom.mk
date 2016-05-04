@@ -121,6 +121,27 @@ LOCAL_EXPORT_CFLAGS := -DLEDD_SKIP_PLUGINS=true
 include $(BUILD_STATIC_LIBRARY)
 
 ################################################################################
+# ledd_client
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libledd_client
+LOCAL_DESCRIPTION := Library for implementing a ledd clietn
+LOCAL_CATEGORY_PATH := tools/ledd
+
+LOCAL_SRC_FILES := \
+	$(call all-c-files-in,ledd_client/src)
+
+LOCAL_LIBRARIES := \
+	libpomp
+
+LOCAL_EXPORT_C_INCLUDES := \
+	$(LOCAL_PATH)/ledd_client/include
+
+include $(BUILD_LIBRARY)
+
+################################################################################
 # ledd_plugin
 ################################################################################
 
