@@ -1,0 +1,5 @@
+<map id="led_channel" name="led_channel">
+<area shape="rect" id="node2" href="$structled.html" title="led" alt="" coords="53,273,92,300"/>
+<area shape="rect" id="node4" href="$structled__driver__ops.html" title="operations for implementing a led driver " alt="" coords="19,95,126,121"/>
+<area shape="rect" id="node3" href="$structled__driver.html" title="main structure of a led driver " alt="" coords="33,184,112,211"/>
+</map>

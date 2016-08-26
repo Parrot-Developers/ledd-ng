@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<title>
+Ledd
+</title>
+<link href="markdown.css" rel="stylesheet"></link>
+<script src="toc.js" type="text/javascript"></script>
+<body onload="generateTOC(document.getElementById('toc'));">
+
+<h1 id="ledd---led-driving-daemon">ledd - led driving daemon</h1>
+<h2 id="table-of-content">Table of content</h2>
+<div id="toc">
+
+</div>
+<h2 id="overview">Overview</h2>
+<p>Ledd is a daemon responsible of controlling the leds of a product. It is controlled by a <a href="https://github.com/Parrot-Developers/libpomp">libpomp</a> socket on any transport method it supports.</p>
+<p>The main parts of ledd have their own <em>README.md</em> file in their directory. A full HTML documentation is generated from them in <em>doc/ledd.html</em>, by executing <strong>./doc/generate.sh</strong> at the root of ledd's source directory.</p>
+<h2 id="features">Features</h2>
+<h3 id="lua-configuration-files">Lua configuration files</h3>
+<p>No need to know the lua syntax, example configuration files are provided in <em>config/</em> and should be straight forward to understand.</p>
+<p>Three configuration files (which can be merged in one big file) are used :</p>
+<ul>
+<li><em>global.conf</em> : handles ledd's global configuration.</li>
+<li><em>platform.conf</em> : describes the leds present on the product, with their channels and the userland driver they use</li>
+<li><em>patterns.conf</em> : contains the ledd patterns descriptions, independently of the hardware it is used on</li>
+</ul>
+<p>Full access to lua's standard library and features is available, although not mandatory to use.</p>
+<h3 id="plugin-system">Plugin system</h3>
+<p>The plug-in system allows for now to register three types of things :</p>
+<ul>
+<li>a <em>userland led driver</em>, basically by implementing a <em>set_value</em> callback</li>
+<li>a new <em>led state transition</em>, more info in the <em>ledd_plugins/transitions</em> folder's readme</li>
+<li><em>lua global values or functions</em>, accessible in <em>platform.conf</em> or <em>patterns.conf</em></li>
+</ul>
+<p>Examples of drivers, transitions and lua globals plug-ins are provided in the <em>ledd_plugins/</em> directory.</p>
+<h3 id="different-integration-methods-available">Different integration methods available</h3>
+<p>Depending on the situation you're in, you have the following solution in order to integrate ledd :</p>
+<ul>
+<li>as a <em>standalone system daemon</em>, a boxinit service file is provided in <em>config/</em><br />this is the nominal case</li>
+<li>as a <em>shared library</em>, to be integrated on an event loop via it's exposed fd<br />if you want, for example, to limit the processes in resources constrained environments (e.g. P6 products)</li>
+<li>as a <em>static library</em>, in an event loop and with all the plugins built-in<br />the typical use case is for an installer UI driving the leds</li>
+</ul>
+<h3 id="other-features">Other features</h3>
+<ul>
+<li><em>simulator friendly</em><br />With the <em>socket</em> plugin, a libpomp client can receive the values sent by ledd. An example client is provided in utils/sldUI.py.</li>
+<li><em>logs via ulog</em></li>
+</ul>
+<h2 id="usage-test">Usage / test</h2>
+<p>These instructions need that you are at the root of a workspace with ledd, in which <em>pclinux</em> is a native variant, the example is ran in an evinrude workspace.</p>
+<ol style="list-style-type: decimal">
+<li>build ledd and the needed bits:<br /> ./build.sh -p pclinux -A ledd pwm_led_driver zzz_tricolor_led_driver socket_led_driver read_hsis flicker_transition ldc pomp-cli final -j</li>
+<li>create a configuration:<br /> sed &quot;s#\(workspace = \).*#\1\&quot;$PWD/\&quot;#g&quot; packages/ledd/config/global.conf &gt; ledd.global.conf</li>
+<li>launch ledd:<br /> ULOG_STDERR=y ./out/evinrude-pclinux/final/native-wrapper.sh ledd ./ledd.global.conf<br />If problems arise, increase the verbosity by setting the environment variable <em>ULOG_LEVEL=D</em> and adapt the configuration.</li>
+<li>in another window, launch the socket driver python example client:<br /> PYTHONPATH=/home/ncarrier/drones_workspace/packages/libpomp/python ./packages/ledd/utils/sldUI.py unix:/tmp/socket_led_driver.sock</li>
+<li>in a third window, ask ledd to play a pattern:<br /> ./out/evinrude-pclinux/final/native-wrapper.sh ldc set_pattern color_rotation false<br />and see the result in the client's window</li>
+<li>then you can quit ledd with:<br /> ./out/evinrude-pclinux/final/native-wrapper.sh ldc quit</li>
+</ol>
+<h2 id="libledd">libledd</h2>
+<h3 id="overview-1">Overview</h3>
+<p><em>libledd</em> is the library used to implement a ledd daemon.</p>
+<h3 id="usage">Usage</h3>
+<p>The API is designed to work asynchronously, with no thread and to integrate in a file descriptor event loop, such as select, poll or epoll.</p>
+<p>For more details, please refer to the <a href="libledd/ledd_8h.html">doxygen documentation provided</a></p>
+<p>The file <strong>ledd/src/ledd/main.c</strong> provides an example implementation of a ledd daemon using libledd.</p>
+<h2 id="configuration-files">Configuration files</h2>
+<h3 id="overview-2">Overview</h3>
+<p>Ledd uses lua script files for it's configuration. Examples are provided in the <em>config/</em> directory. The full lua standard library is available.</p>
+<p>3 different configuration files are used, global.conf, platform.conf and patterns.conf.</p>
+<p>Plug-ins can register functions or values to be accessible in one or more of the config files. For example the <em>tricolor</em> led driver registers <em>red</em>, <em>yellow</em> and so on, as values for a <em>hue</em> channel.</p>
+<h3 id="syntax">Syntax</h3>
+<p>This is not a comprehensive guide on how to write lua programs, just the bits to get started with ledd. For more in depth information, please refer to <a href="https://www.lua.org/">the lua website</a> or in the online book, <a href="https://www.lua.org/pil/contents.html">Programming in lua</a>.</p>
+<p>3 types of variables are used, <em>numbers</em>, <em>tables</em> and <em>strings</em>. All variables can be referenced without declaration, they will have the value <em>nil</em> until they are given another one (hence the errors of the type &quot;expected number, got nil&quot;).</p>
+<p><em>Strings</em> can be built by concatenation, using the <em>..</em> operator. Concatenation of a number with a string converts it automatically to a string.</p>
+<p><em>Tables</em> are associative array, with any type except nil, being accepted for the keys. Elements inserted in a table with no explicit key are associated a number key, incremented automatically, starting at index 1.</p>
+<h3 id="global.conf">global.conf</h3>
+<p>First and only command line argument of ledd, not mandatory. If not provided, ledd will load <strong>/etc/ledd/global.conf</strong> by default.</p>
+<p>Please refer to the <em>config/global.conf</em> file for a completely documented example.</p>
+<h4 id="granularity">granularity</h4>
+<p>Number of milliseconds between led channels' value update. Updates occur only when the value for the channel has changed. Pattern frames' duration must be a multiple of the granularity.<br />Defaults to <strong>10</strong>ms.</p>
+<h4 id="platform_config">platform_config</h4>
+<p>Path to the platform.conf configuration file.<br />Defaults to <strong>/etc/ledd/platform.conf</strong>.</p>
+<h4 id="patterns_config">patterns_config</h4>
+<p>Path to the patterns.conf configuration file.<br />Defaults to <strong>/etc/ledd/patterns.conf</strong>.</p>
+<h4 id="startup_pattern">startup_pattern</h4>
+<p>If not nil, ledd will play this pattern at startup.<br />Defaults to <strong>nil</strong>.</p>
+<h4 id="address">address</h4>
+<p>Libpomp address ledd will listen to, in the <a href="https://github.com/Parrot-Developers/libpomp/blob/master/include/libpomp.h#L859">libpomp address format</a>.<br />Defaults to <strong>unix:<span class="citation">@ledd.socket</span></strong>.</p>
+<h4 id="plugins_dir">plugins_dir</h4>
+<p>Directory which will be scanned to look for plug-ins, normally useful only for development.<br />Defaults to <strong>/usr/lib/ledd-plugins</strong>.</p>
+<h3 id="platform.conf">platform.conf</h3>
+<p>Configuration file describing which leds are present on the product, with how many channels and controlled by which userland drivers.</p>
+<p>Please refer to the <em>config/platform.conf.tricolor</em> file for a completely documented example.</p>
+<p>It must contain a global table <em>leds</em>, whose elements are the led descriptions.</p>
+<p>Each led description is indexed by the led's name and must contain the <em>driver</em> element, with the name of the driver driving the channels for this led. Admissible names depend on the drivers enabled in alchemy's config and drivers do register themselves with a call to <em>led_driver_register()</em>, which you can use to retrieve the name they are registered under.</p>
+<p>Then comes the channels list in which each <em>channel</em> is indexed by it's name. Each channel can contain a <em>parameters</em> element which is a string whose content depends on the driver in use.</p>
+<h3 id="patterns.conf">patterns.conf</h3>
+<p>Configuration file describing which led patterns ledd will be able to play.</p>
+<p>Please refer to the <em>config/patterns.conf.tricolor</em> file for a completely documented example.</p>
+<h4 id="the-patterns-table">The patterns table</h4>
+<p>Mandatory, it's elements are the patterns descriptions indexed by their name.</p>
+<h4 id="the-pattern-description-tables">The pattern description tables</h4>
+<p>They describe how the led channels will behave when the pattern is playing. If a led channel is controlled by a pattern, then all it's channels will be. A pattern can control multiple leds.</p>
+<p>They <em>may</em> contain these optional fields:</p>
+<ul>
+<li><strong>repetitions</strong>: number of times the pattern will be played, with 0 meaning infinite.<br />Defaults to <strong>1</strong>.</li>
+<li><strong>intro</strong>: when repeating a pattern, this number gives the offset in milliseconds at which the loop will restart.<br />Defaults to <strong>0</strong>.</li>
+<li><strong>outro</strong>: when repeating a pattern, this number gives the offset in milliseconds from which the loop will go back to the intro offset, 0 means no outro.<br />Defaults to <strong>0</strong>.</li>
+<li><strong>default_value</strong>: when a led is controlled by a pattern, all it's channels are controlled, but not all must be explicitly designated by the pattern. All channels not explicitly controlled are put to a fixed value, the <strong>default_value</strong>.<br />Defaults to <strong>0</strong>.</li>
+</ul>
+<div class="figure">
+<img src="intro_outro_repetitions.png" title="See how I&#39;m mastering gimp ?" alt="Intro, outro and repetitions" /><p class="caption">Intro, outro and repetitions</p>
+</div>
+<p>It <em>must</em> contain as many pattern description tables, the <strong>pattern channels</strong>, as the number of led channels the pattern must control.</p>
+<h4 id="the-pattern-channel-tables">The pattern channel tables</h4>
+<p>A pattern channel description table <em>must</em> contain the following fields:</p>
+<ul>
+<li><strong>led_id</strong>: name of the led to control</li>
+<li><strong>channel_id</strong>: name of the led's channel this pattern controls</li>
+<li>a list of <strong>pattern frames</strong> tables</li>
+</ul>
+<h4 id="the-pattern-frame-tables">The pattern frame tables</h4>
+<p>They <em>must</em> contain two integer numbers:</p>
+<ul>
+<li><strong>value</strong> or <strong>transition</strong>: if the first number is in [0, 255], then it's a <strong>value</strong> the led channel must take, if it is above 256, then it's a <strong>transition</strong>, which must have been registered by ledd or one of it's plugins.<br />Transitions built-in ledd are <em>cosine</em> and <em>ramp</em>.</li>
+<li><strong>duration</strong> in milliseconds, must be a multiple of the granularity defined in the <em>global.conf</em> file.</li>
+</ul>
+<h4 id="fully-commented-example">Fully commented example</h4>
+<pre><code>    patterns = {
+      intro_outro = {
+        {
+          led_id = &quot;pitot&quot;,
+          channel_id = &quot;hue&quot;,
+          {blue, 2000},
+        },
+        {
+          led_id = &quot;pitot&quot;,
+          channel_id = &quot;value&quot;,
+          {0x00, 10},
+          {ramp, 490},
+          {0xff, 250},
+          {0x00, 500},
+          {0xff, 250},
+          {ramp, 500},
+        },
+        default_value = 0xFF,
+        repetitions = 3,
+        intro = 500,
+        outro = 500,
+      },
+    }</code></pre>
+<p>This patterns table contains one pattern, <strong>intro_outro</strong>. It controls explicitly the <strong>hue</strong> and <strong>value</strong> channels of the <strong>pitot</strong> led, which is controlled by the <strong>tricolor</strong> driver (this must have been declared previously in a <strong>platform.conf</strong> file). The <strong>saturation</strong> channel is controlled implicitly and it's value will be 0xFF, or 255, during all the duration of the pattern. The <strong>hue</strong> channel will stay at the color blue, or 171 as defined by the tricolor driver, during 2000 milliseconds, which is the base duration of the pattern. The base behavior of the <strong>value</strong> channel will be: ramp from 0 (switched off), to 0xff (maximum luminosity) in 500 ms (10 + 490), then stay on for 250 ms, switch off during 500 ms, switch on again for 250 ms and ramp down to off in 500 ms.</p>
+<p>Because <strong>repetitions</strong>, <strong>intro</strong> and <strong>outro</strong> are set, the final behavior will change a little:</p>
+<ol style="list-style-type: decimal">
+<li>the value will ramp from 0 to 0xff in 500 ms (intro)</li>
+<li>the led will switch off for 250 ms</li>
+<li>the led will switch on for 500 ms</li>
+<li>the led will switch off for 250 ms</li>
+<li>jump twice to 2.</li>
+<li>the value will ramp down to switched off state in 500ms</li>
+</ol>
+<p>So the led will blink 3 times in the body of the pattern and the final total pattern duration will be of 4 seconds, 500 ms (intro) + 3 * 1000 ms (main body of the pattern) + 500 ms (outro).<br />The resulting animation is shown by next image, refresh the page to replay the animation.</p>
+<div class="figure">
+<img src="intro_outro.gif" title="You can&#39;t imagine how much time such a simple animated gif can take to make..." alt="intro_outro pattern, refresh the page to replay the animation" /><p class="caption">intro_outro pattern, refresh the page to replay the animation</p>
+</div>
+<h2 id="ledd_client---ledd-client-library">ledd_client - ledd client library</h2>
+<h3 id="overview-3">Overview</h3>
+<p><em>ledd_client</em> is a simple library to connect to a ledd daemon via it's libpomp socket, locally or remotely, allowing to ask it to play led patterns.</p>
+<h3 id="usage-1">Usage</h3>
+<p>The API is designed to work asynchronously, with no thread and to integrate in a file descriptor event loop, such as select, poll or epoll.</p>
+<p>For more details, please refer to the <a href="ledd_client/ledd__client_8h.html">doxygen documentation provided</a></p>
+<h2 id="utils">utils</h2>
+<h3 id="ldc">ldc</h3>
+<p>Thin shell script wrapper around pomp-cli. Allows to interact with ledd in command-line. Please execute the <strong>ldc help</strong> command for a comprehensive documentation of the ldc's command-line options.</p>
+<h3 id="sldui.py">sldUI.py</h3>
+<p>Gtk based GUI client for a ledd socket platform. Allows to visualize patterns in a window, thus making ledd compatible with simulators. Intended to serve as a documentation on how to write a ledd socket driver libpomp client.</p>
+<p>Please the <strong>Usage / test</strong> section in the main documentation for an usage example.</p>
+<h2 id="ledd_plugin---ledd-plugins-library">ledd_plugin - ledd plugins library</h2>
+<h3 id="overview-4">Overview</h3>
+<p><em>ledd_plugin</em> is a library to implement ledd plugins. It provides registration functions for all the types of plug-ins available plus some helper functions.</p>
+<p>Some plug-ins are provided with ledd and are documented later in this section.</p>
+<h3 id="usage-2">Usage</h3>
+<p>For more details, please refer to the <a href="ledd_plugins/ledd__plugin_8h.html">doxygen documentation provided</a></p>
+<h3 id="plug-ins-of-type-driver">Plug-ins of type Driver</h3>
+<h4 id="overview-5">Overview</h4>
+<p>Set of provided drivers for driving leds, which can be referenced by a <em>platform.conf</em> file.</p>
+<h4 id="file_led_driver">file_led_driver</h4>
+<p>Allows to log to a file the values which would be set to the leds' channels, mainly for debugging purpose.</p>
+<p>The environment variable <strong>FILE_LED_DRIVER_BACKING_FILE_PATH</strong> will be used as the path of the output file which will be truncated at ledd's startup. The value defaults to <strong>/tmp/file_led_driver</strong>.</p>
+<p>For example, if the platform config file has the following content :</p>
+<pre>
+leds = {
+    pitot = {
+        driver = "file",
+        channels = {
+            red = { parameters = "red", },
+            green = { parameters = "green", },
+            blue = { parameters = "blue", },
+        },
+    },
+}
+</pre>
+
+<p>After a ledd run, the following script :</p>
+<pre>
+#!/usr/bin/gnuplot
+
+print "Hit Ctrl+C to quit"
+plot "/tmp/file_led_driver" \
+    using 2:(stringcolumn(1) eq "R" ? $3 : 1/0) title 'red channel' lc rgb "red", \
+    "" using 2:(stringcolumn(1) eq "G" ? $3 : 1/0) title 'green channel' lc rgb "green", \
+    "" using 2:(stringcolumn(1) eq "B" ? $3 : 1/0) title 'blue channel' lc rgb "blue"
+pause -1
+</pre>
+
+<p>will allow to visualize the curves of the channels.</p>
+<h4 id="gpio_led_driver">gpio_led_driver</h4>
+<p>Allows to drive leds controlled by a gpio, by using the standard linux gpio sysfs API or similar.</p>
+<h5 id="basic-operation">Basic operation</h5>
+<p>The <em>parameters</em> of the led channels controlled by this driver can contain either a number (say <em>N</em>) or direcly the path to the gpio's directory. In the former case, it will be echoed to the <em>/sys/class/gpio/export</em> file and the gpio directory used will be <em>/sys/class/gpio/gpioN</em>. The later case is mainly useful for non standard location for gpio control files. In both situations, the <em>direction</em> file inside the directory will be set to <em>out</em> and the <em>value</em> file will be used to pilot the state of the led.</p>
+<p>For exemple, the following <em>platform.conf</em> file :</p>
+<pre>
+leds = {
+    main = {
+        driver = "gpio",
+        channels = {
+            blue = { parameters = "408", },
+        },
+    },
+}
+</pre>
+
+<p>declares one blue led wired on the gpio 408. It's control directory will be <em>/sys/class/gpio/gpio408</em>.</p>
+<h5 id="software-dimming">Software dimming</h5>
+<p>If the <strong>GPIO_LED_DRIVER_BIT_BANGING_PRECISION</strong> environment variable is defined to a non-zero value, the gpio will be bit-banged to obtain different levels of brightness in a PWM fashion. The higher the precision, the better the granularity, but if it is too high, the flickering can become visible. A typical good value is <em>50</em>, which will give you 50 different levels of brightness (mapped to [0,255]) and will be updated at a period of 20Hz.</p>
+<p><strong>Note</strong> that enabling bit banging will created an update loop which will run at 1kHz which isn't negligible on low resource platforms. Not defining the environment variable will make the driver consume resources only on value update.</p>
+<h4 id="pwm_led_driver">pwm_led_driver</h4>
+<p>Allows to drive leds controlled by a pwm, by using the standard linux pwm sysfs API.</p>
+<p>The <em>parameters</em> of the led channels controlled by this driver must contain a space-separated list of <em>key=value</em> configuration pairs. The supported configuration keys are :</p>
+<h5 id="pwm_index">pwm_index</h5>
+<p>Used to export the pwm, mandatory. The pwm control directory used will be <em>/sys/class/pwm/pwm_N</em>.</p>
+<h5 id="period_ns">period_ns</h5>
+<p>Period of the pwm, written in the corresponding file, defaults to 1000000 ns.</p>
+<h5 id="max_duty_ns">max_duty_ns</h5>
+<p>Maximum value to be written to the <em>duty_ns</em> control file. Defaults to the value of <em>period_ns</em>.</p>
+<p>For exemple, the following <em>platform.conf</em> file :</p>
+<pre>
+parameters = "pwm_index=12 max_duty_ns=900000 period_ns=1000000"
+leds = {
+    main = {
+        driver = "pwm",
+        channels = {
+            white = { parameters = parameters, },
+        },
+    },
+}
+</pre>
+
+<p>declares one led wired on the pwm 12. The period of the pwm will be set to 1000000ns, note that this parameter could have been omitted, because it's the default value. The value in [0,255] will be mapped linearly into the [0,900000] interval.</p>
+<h4 id="socket_led_driver">socket_led_driver</h4>
+<p>The socket led driver creates a libpomp socket to which a client can connect and receive the led channels' values sent by ledd. This driver can be used for example, to tweak led patterns on a PC, prior to uploading them to an embedded target.</p>
+<p>The <em>utils/sldUI.py</em> client demonstrates as simplistic gtk gui to visualize a three color led. It's usage is described in the <em>Usage / test</em> section of the top level README.md file.</p>
+<p>The default address for the socket created will be <em>unix:/tmp/socket_led_driver.sock</em>, that is a named unix socket backed by the <em>/tmp/socket_led_driver.sock</em> file.</p>
+<p>If the <strong>SOCKET_LED_DRIVER_ADDRESS</strong> environment variable is passed to ledd, it's content will be used as a libpomp address, whose format is described in the documentation of the libpomp project. Possible value are, e.g. : unix:<span class="citation">@my.socket</span> (abstract unix address), inet:IPV4_ADDRESS:PORT or inet6:IPV6_ADDRESS:PORT.</p>
+<h4 id="tricolor_led_driver">tricolor_led_driver</h4>
+<p>This driver allows to control an RGB tricolor led with hue, saturation and value channels. It must be used above any of the other led drivers available, for exemple, the file, socket, gpio or pwm drivers provided.</p>
+<p>The <em>parameters</em> led channel configuration key must contain the string <em>&quot;driver_name[|red_chan_prm|green_chan_prm|blue_chan_prm]&quot;</em>. Where <em>driver_name</em> is the name of the underlying driver used to pilot the led's channels, where <em>red_chan_prm</em> is the parameters string used to configure the red channel with the <em>driver_name</em> driver and so on.</p>
+<p>A limitation is that both three channels can't be driven by different drivers.</p>
+<p>For exemple, the following <em>platform.conf</em> file :</p>
+<pre>
+leds = {
+    pitot = {
+        driver = "tricolor",
+        channels = {
+            hue = { parameters = "socket", },
+            saturation = { parameters = "socket", },
+            value = { parameters = "socket", },
+        },
+    },
+}
+</pre>
+
+<p>describes a platform with a tricolor led whose values will be sent to a libpomp socket.</p>
+The following <em>platform.conf</em> file :
+<pre>
+leds = {
+    pitot = {
+        driver = "tricolor",
+        channels = {
+            hue = { parameters = "gpio|408|410|412", },
+            saturation = { parameters = "gpio|408|410|412", },
+            value = { parameters = "gpio|408|410|412", },
+        },
+    },
+}
+</pre>
+
+<p>describes a platform with a tricolor led whose red, green and blue channels are plugged respectively on the gpios 408, 410 and 412.</p>
+<h3 id="plug-ins-of-type-lua-globals">Plug-ins of type Lua Globals</h3>
+<p>This directory contains the code for ledd plug-ins registering lua globals available in ledd configuration files.</p>
+<h4 id="read_hsis-lua-global-function">read_hsis Lua global function</h4>
+<p>Registers the lua function <strong>read_hsis_int</strong>, to be available in <em>platform</em> configuration files.<br />This function allows to read a file in <em>/sys/kernel/hsis/</em> by giving it's name and returns it's content.</p>
+<h3 id="plug-ins-of-type-transition">Plug-ins of type Transition</h3>
+<p>This directory contains the code for ledd plug-ins to register transitions types in pattern definitions. Built-in transition types are <em>ramp</em> and <em>cosine</em>.</p>
+<h4 id="flicker-transition">flicker transition</h4>
+<p>Registers the transition <strong>flicker_transition</strong>, to be available in <em>patterns</em> configuration files.<br />This transition is a ramp between the initial and target value with some added noise. It is more an example on how to implement a custom transition than a real life useful example though.</p>
+</body>
+</html>
