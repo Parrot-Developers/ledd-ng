@@ -72,11 +72,11 @@ which *pclinux* is a native variant, the example is ran in an evinrude
 workspace.
 
 1. build ledd and the needed bits:  
-        ./build.sh -p pclinux -A ledd pwm_led_driver zzz_tricolor_led_driver socket_led_driver read_hsis flicker_transition ldc pomp-cli final -j
+        ./build.sh -p pclinux -A ledd-ng pwm_led_driver zzz_tricolor_led_driver socket_led_driver read_hsis flicker_transition ldc pomp-cli final -j
 2. create a configuration:  
         sed "s#\\(workspace = \\).*#\\1\\"$PWD/\\"#g" packages/ledd/config/global.conf  > ledd.global.conf
 3. launch ledd:  
-        ULOG_STDERR=y ./out/evinrude-pclinux/final/native-wrapper.sh ledd ./ledd.global.conf  
+        ULOG_STDERR=y ./out/evinrude-pclinux/final/native-wrapper.sh ledd-ng ./ledd.global.conf  
 If problems arise, increase the verbosity by setting the environment variable
 *ULOG_LEVEL=D* and adapt the configuration.
 4. in another window, launch the socket driver python example client:  

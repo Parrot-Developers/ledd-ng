@@ -1,4 +1,4 @@
-service ledd /usr/bin/ledd
+service ledd /usr/bin/ledd-ng
     setenv ULOG_LEVEL D
     class main
     user root

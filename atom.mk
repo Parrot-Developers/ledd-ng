@@ -6,7 +6,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := ledd
+LOCAL_MODULE := ledd-ng
 LOCAL_DESCRIPTION := Daemon handling leds behaviour
 LOCAL_CATEGORY_PATH := tools/ledd
 
