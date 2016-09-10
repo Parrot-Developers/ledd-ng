@@ -77,7 +77,7 @@ int plugins_init(const char *plugins_dir)
 			ULOGE("%s asprintf error", __func__);
 			return -ENOMEM;
 		}
-		ULOGD("loading plugin %s\n", path);
+		ULOGD("loading plugin %s", path);
 		*current_plugin = dlopen(path, RTLD_NOW);
 		free(path);
 		if (!*current_plugin)
