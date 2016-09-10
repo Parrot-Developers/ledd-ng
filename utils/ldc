@@ -7,7 +7,10 @@ MSG_QUIT=1
 MSG_DUMP_CONFIG=2
 MSG_SET_VALUE=3
 
-address=unix:@ledd.socket
+conf_file=${LEDD_GLOBAL_CONF:-/etc/ledd/global.conf}
+
+address=$(lua -e "(loadfile\"${conf_file}\" or print)()
+		print(address or \"unix:@ledd.socket\")")
 
 usage() {
 	cat <<usage_here_document
