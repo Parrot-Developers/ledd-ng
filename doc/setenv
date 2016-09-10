@@ -1,0 +1,18 @@
+export ALCHEMY_HOME=$PWD/alchemy/
+export ALCHEMY_USE_COLORS=1
+export ALCHEMY_WORKSPACE_DIR=$PWD
+
+# used by ldc
+export LEDD_GLOBAL_CONF=$PWD/global.conf
+# used by ledd_client_example
+export LEDD_CLIENT_GLOBAL_CONF=$PWD/global.conf
+
+# normally, logs in the ulog log system rely on the ulogger module being loaded
+# and can be consulted with the ulogcat command
+# for the sake of simplicity, these variables will ask ulog to log at the
+# maximum level, on the standard error and with colors
+export ULOG_LEVEL=D
+export ULOG_STDERR=y
+export ULOG_STDERR_COLOR=y
+
+alias alchemake="$ALCHEMY_HOME/scripts/alchemake"
