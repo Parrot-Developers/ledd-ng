@@ -12,6 +12,8 @@ function createLink(href, innerHTML) {
 
 function generateTOC(toc) {
 	var i2 = 0, i3 = 0, i4 = 0;
+	var title = document.getElementById('toc_title');
+	title.innerHTML = "Table of contents";
 	toc = toc.appendChild(document.createElement("ul"));
 	for (var i = 0; i < document.body.childNodes.length; ++i) {
 		var node = document.body.childNodes[i];

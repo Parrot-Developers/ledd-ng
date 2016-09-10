@@ -1,9 +1,5 @@
 # ledd - led driving daemon
 
-## Table of content
-
-<div id="toc"></div>
-
 ## Overview
 
 Ledd is a daemon responsible of controlling the leds of a product.
@@ -12,6 +8,10 @@ It is controlled by a [libpomp] socket on any transport method it supports.
 The main parts of ledd have their own *README.md* file in their directory.
 A full HTML documentation is generated from them in *doc/ledd.html*, by
 executing **./doc/generate.sh** at the root of ledd's source directory.
+
+<h2 id="toc_title"></h2>
+
+<div id="toc"></div>
 
 ## Features
 
