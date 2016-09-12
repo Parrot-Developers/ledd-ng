@@ -58,6 +58,18 @@ int led_driver_register(struct led_driver *driver)
 	return 0;
 }
 
+void led_driver_tick_all_drivers(void)
+{
+	unsigned i;
+
+	for (i = 0; i < nb_drivers; i++) {
+		if (led_drivers[i]->ops.tick == NULL)
+			continue;
+
+		led_drivers[i]->ops.tick(led_drivers[i]);
+	}
+}
+
 void led_driver_unregister(const struct led_driver *driver)
 {
 	unsigned i;

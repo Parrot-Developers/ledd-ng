@@ -122,6 +122,14 @@ struct led_driver_ops {
 	 * @param events bit-mask of the events reported (R, W or both)
 	 */
 	void (*process_events)(struct led_driver *driver, int events);
+	/**
+	 * @fn tick
+	 * @brief callback notified when all the set_value callbacks have been
+	 * called for all the leds channels registered in ledd for any driver.
+	 * Allows drivers to pack their commands to limit writes.
+	 * @param driver led driver notified of the end of the current tick
+	 */
+	void (*tick)(struct led_driver *driver);
 };
 
 /**
@@ -150,6 +158,12 @@ struct led_driver {
  * @return 0 on success, errno-compatible negative value on error
  */
 int led_driver_register(struct led_driver *driver);
+
+/**
+ * @brief notifies all the drivers that all the set_value calls have been
+ * performed during this tick
+ */
+void led_driver_tick_all_drivers(void);
 
 /**
  * @brief un-registers a led driver from ledd

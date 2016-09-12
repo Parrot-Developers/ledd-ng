@@ -20,6 +20,8 @@ ULOG_DECLARE_TAG(ledd_player);
 #include <ut_utils.h>
 #include <ut_string.h>
 
+#include <ledd_plugin.h>
+
 #include "player.h"
 #include "pattern.h"
 #include "global.h"
@@ -265,6 +267,8 @@ int player_update(void)
 		player.playing = false;
 		ULOGI("player stopped");
 	}
+
+	led_driver_tick_all_drivers();
 
 	return 0;
 }
