@@ -23,6 +23,7 @@
 struct ledd_client {
 	struct pomp_ctx *pomp;
 	struct ledd_client_ops ops;
+	char *address;
 	void *userdata;
 };
 
@@ -44,12 +45,6 @@ struct ledd_client *ledd_client_new(const char *address,
 {
 	int old_errno;
 	struct ledd_client *client;
-	int ret;
-	union {
-		struct sockaddr_storage addr_str;
-		struct sockaddr addr_sock;
-	} addr;
-	uint32_t addrlen = sizeof(addr.addr_str);
 
 	client = calloc(1, sizeof(*client));
 	if (client == NULL)
@@ -62,19 +57,14 @@ struct ledd_client *ledd_client_new(const char *address,
 	}
 	if (address == NULL)
 		address = "unix:@ledd.socket";
-	ret = pomp_addr_parse(address, &addr.addr_sock, &addrlen);
-	if (ret < 0) {
-		old_errno = -ret;
+	client->address = strdup(address);
+	if (client->address == NULL) {
+		old_errno = errno;
 		goto err;
 	}
 	/* must be done before connect because it can notify */
 	client->ops = *ops;
 	client->userdata = userdata;
-	ret = pomp_ctx_connect(client->pomp, &addr.addr_sock, addrlen);
-	if (ret < 0) {
-		old_errno = -ret;
-		goto err;
-	}
 
 	return client;
 err:
@@ -83,6 +73,23 @@ err:
 
 	return NULL;
 }
+
+int ledd_client_connect(struct ledd_client *client)
+{
+	int ret;
+	union {
+		struct sockaddr_storage addr_str;
+		struct sockaddr addr_sock;
+	} addr;
+	uint32_t addrlen = sizeof(addr.addr_str);
+
+	ret = pomp_addr_parse(client->address, &addr.addr_sock, &addrlen);
+	if (ret < 0)
+		return ret;
+
+	return pomp_ctx_connect(client->pomp, &addr.addr_sock, addrlen);
+}
+
 int ledd_client_get_fd(struct ledd_client *client)
 {
 	if (client == NULL)
@@ -115,6 +122,8 @@ void ledd_client_destroy(struct ledd_client **client)
 		return;
 	c = *client;
 
+	if (c->address != NULL)
+		free(c->address);
 	if (c->pomp != NULL) {
 		pomp_ctx_stop(c->pomp);
 		pomp_ctx_destroy(c->pomp);

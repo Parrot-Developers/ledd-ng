@@ -34,19 +34,23 @@ struct ledd_client_ops {
 };
 
 /**
- * Allocates a ledd client context and tries to connect it to a ledd server
- * listening at the given address
+ * Allocates and initializes a ledd client context
  * @param address address of the ledd server to contact, can be NULL, in this
  * case, defaults to "unix:@ledd.socket"
  * @param ops client callbacks
  * @param userdata userdata pointer passed to the callbacks when called
  * @return NULL on error, with errno set, ledd client context newly allocated
  * and initialized on success
- * @note the connection_cb callback can be called during the ledd_client_new()
- * call
  */
 struct ledd_client *ledd_client_new(const char *address,
 		const struct ledd_client_ops *ops, void *userdata);
+
+/**
+ * Connects the ledd client to the server
+ * @param client ledd client to connect
+ * @return 0 on success, errno-compatible negative value on error
+ */
+int ledd_client_connect(struct ledd_client *client);
 
 /**
  * Gets the underlying file descriptor of a ledd client context. The file
