@@ -134,6 +134,7 @@ LOCAL_SRC_FILES := \
 	$(call all-c-files-in,ledd_client/src)
 
 LOCAL_LIBRARIES := \
+	liblua \
 	libpomp
 
 LOCAL_EXPORT_C_INCLUDES := \

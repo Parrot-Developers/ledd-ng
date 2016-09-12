@@ -11,6 +11,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <lualib.h>
+#include <lauxlib.h>
+
 #include <libpomp.h>
 
 #include <ledd_client.h>
@@ -38,6 +41,42 @@ static void pomp_event_cb(struct pomp_ctx *ctx, enum pomp_event event,
 
 	client->ops.connection_cb(client->userdata,
 			event == POMP_EVENT_CONNECTED);
+}
+
+char *ledd_client_get_ledd_address(const char *global_conf_path)
+{
+	int ret;
+	lua_State *l = NULL;
+	char *address;
+
+	if (global_conf_path == NULL || *global_conf_path == '\0')
+		goto err;
+	l = luaL_newstate();
+	if (l == NULL)
+		goto err;
+
+	/* allow access to lua's standard library */
+	luaL_openlibs(l);
+
+	ret = luaL_dofile(l, global_conf_path);
+	if (ret != LUA_OK)
+		goto err;
+	lua_getglobal(l, "address");
+	if (!lua_isnil(l, -1)) {
+		address = strdup(luaL_checkstring(l, -1));
+		if (address == NULL)
+			goto err;
+	}
+	lua_pop(l, 1);
+
+	lua_close(l);
+
+	return address;
+err:
+	if (l != NULL)
+		lua_close(l);
+
+	return strdup("unix:@ledd.socket");
 }
 
 struct ledd_client *ledd_client_new(const char *address,

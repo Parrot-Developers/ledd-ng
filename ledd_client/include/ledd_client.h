@@ -34,6 +34,18 @@ struct ledd_client_ops {
 };
 
 /**
+ * Retrieves the libpomp address ledd is listening to, by reading ledd's
+ * global.conf configuration file. Returns "unix:@ledd.socket" by default if for
+ * any reason, no address could be found. If global_conf_path, tries to read the
+ * address in /etc/ledd/global.conf by default.
+ * @param global_conf_path path to the global.conf configuration file used b
+ * ledd, can be NULL
+ * @return address used by ledd, defaulting to "unix:@ledd.socket", must be
+ * freed after usage, on error, returns NULL with errno set
+ */
+char *ledd_client_get_ledd_address(const char *global_conf_path);
+
+/**
  * Allocates and initializes a ledd client context
  * @param address address of the ledd server to contact, can be NULL, in this
  * case, defaults to "unix:@ledd.socket"
