@@ -343,3 +343,24 @@ LOCAL_LIBRARIES := \
 	ledd_plugin
 
 include $(BUILD_LIBRARY)
+
+################################################################################
+# ledd_client_example
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := ledd_client_example
+LOCAL_DESCRIPTION := Simple ledd_client usage example
+LOCAL_CATEGORY_PATH := tools/ledd
+
+LOCAL_SRC_FILES := \
+	ledd_client/example/main.c
+
+LOCAL_LIBRARIES := \
+	libioutils \
+	libutils \
+	libledd_client
+
+include $(BUILD_EXECUTABLE)
+
