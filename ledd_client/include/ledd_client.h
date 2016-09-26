@@ -9,6 +9,12 @@
 #include <stdbool.h>
 
 /**
+ * @def LEDD_DEFAULT_ADDRESS
+ * @brief default address ledd listens to when not configured otherwise
+ */
+#define LEDD_DEFAULT_ADDRESS "unix:@ledd.socket"
+
+/**
  * @struct ledd_client
  * @brief ledd client context, opaque structure
  */

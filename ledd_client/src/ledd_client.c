@@ -75,7 +75,7 @@ err:
 	if (l != NULL)
 		lua_close(l);
 
-	return strdup("unix:@ledd.socket");
+	return strdup(LEDD_DEFAULT_ADDRESS);
 }
 
 struct ledd_client *ledd_client_new(const char *address,
@@ -94,7 +94,7 @@ struct ledd_client *ledd_client_new(const char *address,
 		goto err;
 	}
 	if (address == NULL)
-		address = "unix:@ledd.socket";
+		address = LEDD_DEFAULT_ADDRESS;
 	client->address = strdup(address);
 	if (client->address == NULL) {
 		old_errno = errno;
