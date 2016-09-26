@@ -47,7 +47,7 @@ char *ledd_client_get_ledd_address(const char *global_conf_path)
 {
 	int ret;
 	lua_State *l = NULL;
-	char *address;
+	char *address = NULL;
 
 	if (global_conf_path == NULL || *global_conf_path == '\0')
 		goto err;
@@ -62,11 +62,10 @@ char *ledd_client_get_ledd_address(const char *global_conf_path)
 	if (ret != LUA_OK)
 		goto err;
 	lua_getglobal(l, "address");
-	if (!lua_isnil(l, -1)) {
+	if (lua_isnil(l, -1))
 		address = strdup(luaL_checkstring(l, -1));
-		if (address == NULL)
-			goto err;
-	}
+	if (address == NULL)
+		goto err;
 	lua_pop(l, 1);
 
 	lua_close(l);
