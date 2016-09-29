@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   1: "l",
   2: "l",
   3: "lt",
-  4: "cdfilnoprsv",
+  4: "cdfilnoprstv",
   5: "t",
   6: "l",
   7: "l",

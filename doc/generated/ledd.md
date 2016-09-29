@@ -5,18 +5,78 @@
 
 # ledd - led driving daemon
 
-## Table of content
-
-<div id="toc"></div>
-
 ## Overview
 
 Ledd is a daemon responsible of controlling the leds of a product.
 It is controlled by a [libpomp] socket on any transport method it supports.
+Several led controlling methods, or userland drivers are provided, such as
+gpios and pwms.
+"Virtual" leds can be controled too, writing data on a file or on a libpomp
+socket.
 
 The main parts of ledd have their own *README.md* file in their directory.
-A full HTML documentation is generated from them in *doc/ledd.html*, by
-executing **./doc/generate.sh** at the root of ledd's source directory.
+A full HTML documentation is generated from them in *doc/generated/ledd.html*,
+by executing **./doc/generate.sh** at the root of ledd's source directory.
+
+## Quick start
+
+The following instructions will help you build and configure a ledd daemon, to
+run on a pc, simulating a tri-color led with a gtk window.
+
+1. install the needed tools, as root
+
+        apt-get update
+        apt-get install parallel git python3 make gcc pkg-config g++ \
+            libcunit1-dev liblua5.2-dev linux-headers-amd64 python-gtk2 \
+            python-gobject lua5.2
+
+2. prepare a workspace with the source and all the needed dependencies
+
+        mkdir ledd
+        cd ledd
+        wget -O - https://raw.githubusercontent.com/ncarrier/ledd/master/doc/sources | parallel git clone
+
+3. setup convenient environment variables for the build
+
+        . ledd-ng/doc/setenv
+
+4. build:
+
+        alchemake all final -j 5
+
+5. create a configuration
+
+        sed "s#\(workspace = \).*#\1\"$PWD/\"#g" ledd-ng/config/global.conf > global.conf
+
+6. setup convenient environment variables for runtime
+
+        . Alchemy-out/linux-native-x64/final/native-wrapper.sh
+
+7. launch ledd
+
+        ledd-ng ./global.conf &
+
+If problems arise, increase the verbosity by setting the environment variable
+*ULOG_LEVEL=D* and adapt the configuration.
+
+8. in another window, launch the socket driver python example client in
+background
+
+        PYTHONPATH=./libpomp/python ./ledd-ng/utils/sldUI.py unix:/tmp/socket_led_driver.sock &
+
+9. then ask ledd to play a pattern
+
+        ldc set_pattern color_rotation false  
+
+and see the result in the client's window.
+
+10. then you can quit ledd with
+
+        ldc quit
+
+<h2 id="toc_title"></h2>
+
+<div id="toc"></div>
 
 ## Features
 
@@ -55,7 +115,8 @@ Depending on the situation you're in, you have the following solution in order
 to integrate ledd :
 
 * as a *standalone system daemon*, a boxinit service file is provided in
-*config/*  
+*config/*, but any service monitoring facily can be used, such as systemd or
+busybox' init.  
     this is the nominal case
 * as a *shared library*, to be integrated on an event loop via it's exposed fd  
     if you want, for example, to limit the processes in resources constrained
@@ -69,31 +130,6 @@ to integrate ledd :
 With the *socket* plugin, a libpomp client can receive the values sent by ledd.
 An example client is provided in utils/sldUI.py.
 * *logs via ulog*
-
-## Usage / test
-
-These instructions need that you are at the root of a workspace with ledd, in
-which *pclinux* is a native variant, the example is ran in an evinrude
-workspace.
-
-1. build ledd and the needed bits:  
-        ./build.sh -p pclinux -A ledd pwm_led_driver zzz_tricolor_led_driver socket_led_driver read_hsis flicker_transition ldc pomp-cli final -j
-2. create a configuration:  
-        sed "s#\\(workspace = \\).*#\\1\\"$PWD/\\"#g" packages/ledd/config/global.conf  > ledd.global.conf
-3. launch ledd:  
-        ULOG_STDERR=y ./out/evinrude-pclinux/final/native-wrapper.sh ledd ./ledd.global.conf  
-If problems arise, increase the verbosity by setting the environment variable
-*ULOG_LEVEL=D* and adapt the configuration.
-4. in another window, launch the socket driver python example client:  
-        PYTHONPATH=/home/ncarrier/drones_workspace/packages/libpomp/python ./packages/ledd/utils/sldUI.py unix:/tmp/socket_led_driver.sock
-5. in a third window, ask ledd to play a pattern:  
-        ./out/evinrude-pclinux/final/native-wrapper.sh ldc set_pattern color_rotation false  
-and see the result in the client's window
-6. then you can quit ledd with:  
-        ./out/evinrude-pclinux/final/native-wrapper.sh ldc quit
-
-[libpomp]: https://github.com/Parrot-Developers/libpomp
-
 
 ## libledd
 
@@ -344,7 +380,8 @@ socket, locally or remotely, allowing to ask it to play led patterns.
 The API is designed to work asynchronously, with no thread and to integrate in
 a file descriptor event loop, such as select, poll or epoll.
 
-For more details, please refer to the [doxygen documentation provided](ledd_client/ledd__client_8h.html)
+For more details, please refer to the [doxygen documentation provided](ledd_client/ledd__client_8h.html).
+A complete, functional example, is provided in **ledd\_client/example/**.
 
 
 ## utils

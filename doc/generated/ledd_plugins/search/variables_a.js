@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value',['value',['../structled__channel.html#a9072f8fb8599fa5bc34a21e28c8387a8',1,'led_channel']]]
+  ['tick',['tick',['../structled__driver__ops.html#a9ea5a25fbec106a5de22c5ccd2b5f5a5',1,'led_driver_ops']]]
 ];

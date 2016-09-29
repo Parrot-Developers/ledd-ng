@@ -8,6 +8,7 @@ var searchData=
   ['led_5fdriver_5fops',['led_driver_ops',['../structled__driver__ops.html',1,'']]],
   ['led_5fdriver_5fregister',['led_driver_register',['../ledd__plugin_8h.html#a2f9663b913c50b60cd3db763c8f89d73',1,'ledd_plugin.h']]],
   ['led_5fdriver_5fset_5fvalue',['led_driver_set_value',['../ledd__plugin_8h.html#afb396994daf48f66a03aa0c430bd8feb',1,'ledd_plugin.h']]],
+  ['led_5fdriver_5ftick_5fall_5fdrivers',['led_driver_tick_all_drivers',['../ledd__plugin_8h.html#a099e57d1a0258a2ca296485188725e2b',1,'ledd_plugin.h']]],
   ['led_5fdriver_5funregister',['led_driver_unregister',['../ledd__plugin_8h.html#aae6ba6b0cbdb28afec0a8ce92154939e',1,'ledd_plugin.h']]],
   ['led_5fmax_5fchannels_5fper_5fled',['LED_MAX_CHANNELS_PER_LED',['../ledd__plugin_8h.html#a769a65f96d601867bf5c636be7e6a78f',1,'ledd_plugin.h']]],
   ['led_5fmax_5fdrivers',['LED_MAX_DRIVERS',['../ledd__plugin_8h.html#ac950194651a7a402636355cb6eefbaf1',1,'ledd_plugin.h']]],

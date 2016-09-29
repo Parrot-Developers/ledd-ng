@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,6 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -100,6 +101,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Include dependency graph for ledd_client.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="ledd__client_8h__incl.png" border="0" usemap="#ledd__client_2include_2ledd__client_8h" alt=""/></div>
+<map name="ledd__client_2include_2ledd__client_8h" id="ledd__client_2include_2ledd__client_8h">
+</map>
 </div>
 </div>
 <p><a href="ledd__client_8h_source.html">Go to the source code of this file.</a></p>
@@ -110,6 +113,12 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">structure holding the callbacks to pass to <a class="el" href="ledd__client_8h.html#af6ff3fea259132f96ada38a32c92d294">ledd_client_new()</a>  <a href="structledd__client__ops.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ab08d6d1bab9f0c421f8cea19e9ebef64"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#ab08d6d1bab9f0c421f8cea19e9ebef64">LEDD_DEFAULT_ADDRESS</a>&#160;&#160;&#160;&quot;unix:@ledd.socket&quot;</td></tr>
+<tr class="memdesc:ab08d6d1bab9f0c421f8cea19e9ebef64"><td class="mdescLeft">&#160;</td><td class="mdescRight">default address ledd listens to when not configured otherwise  <a href="#ab08d6d1bab9f0c421f8cea19e9ebef64">More...</a><br /></td></tr>
+<tr class="separator:ab08d6d1bab9f0c421f8cea19e9ebef64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ac098c4226358e5bd3e3f99064c2eeebc"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#ac098c4226358e5bd3e3f99064c2eeebc">ledd_client_connection_cb</a> )(void *userdata, bool connected)</td></tr>
@@ -118,8 +127,12 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ab85f27d0d58ea62745d3c40b5465384c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#ab85f27d0d58ea62745d3c40b5465384c">ledd_client_get_ledd_address</a> (const char *global_conf_path)</td></tr>
+<tr class="separator:ab85f27d0d58ea62745d3c40b5465384c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6ff3fea259132f96ada38a32c92d294"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structledd__client.html">ledd_client</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#af6ff3fea259132f96ada38a32c92d294">ledd_client_new</a> (const char *address, const struct <a class="el" href="structledd__client__ops.html">ledd_client_ops</a> *ops, void *userdata)</td></tr>
 <tr class="separator:af6ff3fea259132f96ada38a32c92d294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8554721f86e30e5bbefa7d59c39713e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#ae8554721f86e30e5bbefa7d59c39713e">ledd_client_connect</a> (struct <a class="el" href="structledd__client.html">ledd_client</a> *client)</td></tr>
+<tr class="separator:ae8554721f86e30e5bbefa7d59c39713e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72beef54d814f25ceb50d5e197424285"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#a72beef54d814f25ceb50d5e197424285">ledd_client_get_fd</a> (struct <a class="el" href="structledd__client.html">ledd_client</a> *client)</td></tr>
 <tr class="separator:a72beef54d814f25ceb50d5e197424285"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b0f9c8db7f3f63a799bdcf42459861d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__client_8h.html#a3b0f9c8db7f3f63a799bdcf42459861d">ledd_client_process_events</a> (struct <a class="el" href="structledd__client.html">ledd_client</a> *client)</td></tr>
@@ -131,8 +144,29 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>library for connecting to a ledd server and setting it's patterns </p>
-<dl class="section date"><dt>Date</dt><dd>May 3, 2016 </dd></dl>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+<p>Copyright (c) 2016 Parrot S.A. All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p><ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the Parrot Company nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE PARROT COMPANY BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="ab08d6d1bab9f0c421f8cea19e9ebef64"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LEDD_DEFAULT_ADDRESS&#160;&#160;&#160;&quot;unix:@ledd.socket&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>default address ledd listens to when not configured otherwise </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="ac098c4226358e5bd3e3f99064c2eeebc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -155,6 +189,29 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ae8554721f86e30e5bbefa7d59c39713e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ledd_client_connect </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structledd__client.html">ledd_client</a> *&#160;</td>
+          <td class="paramname"><em>client</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Connects the ledd client to the server </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>ledd client to connect </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, errno-compatible negative value on error </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a2157634df77e405e108256b62f4356c0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -200,6 +257,29 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ab85f27d0d58ea62745d3c40b5465384c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ledd_client_get_ledd_address </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>global_conf_path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Retrieves the libpomp address ledd is listening to, by reading ledd's global.conf configuration file. Returns "unix:@ledd.socket" by default if for any reason, no address could be found. If global_conf_path, tries to read the address in /etc/ledd/global.conf by default. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">global_conf_path</td><td>path to the global.conf configuration file used b ledd, can be NULL </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>address used by ledd, defaulting to "unix:@ledd.socket", must be freed after usage, on error, returns NULL with errno set </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="af6ff3fea259132f96ada38a32c92d294"></a>
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +309,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Allocates a ledd client context and tries to connect it to a ledd server listening at the given address </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Allocates and initializes a ledd client context </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">address</td><td>address of the ledd server to contact, can be NULL, in this case, defaults to "unix:@ledd.socket" </td></tr>
     <tr><td class="paramname">ops</td><td>client callbacks </td></tr>
@@ -238,7 +318,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>NULL on error, with errno set, ledd client context newly allocated and initialized on success </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>the connection_cb callback can be called during the <a class="el" href="ledd__client_8h.html#af6ff3fea259132f96ada38a32c92d294">ledd_client_new()</a> call </dd></dl>
 
 </div>
 </div>
@@ -309,7 +388,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 26 2016 11:59:32 for ledd_client by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 29 2016 15:51:10 for ledd_client by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

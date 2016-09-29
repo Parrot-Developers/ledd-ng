@@ -106,6 +106,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Include dependency graph for ledd_plugin.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="ledd__plugin_8h__incl.png" border="0" usemap="#ledd__plugins_2include_2ledd__plugin_8h" alt=""/></div>
+<map name="ledd__plugins_2include_2ledd__plugin_8h" id="ledd__plugins_2include_2ledd__plugin_8h">
+</map>
 </div>
 </div>
 <p><a href="ledd__plugin_8h_source.html">Go to the source code of this file.</a></p>
@@ -162,6 +164,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2f9663b913c50b60cd3db763c8f89d73"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__plugin_8h.html#a2f9663b913c50b60cd3db763c8f89d73">led_driver_register</a> (struct <a class="el" href="structled__driver.html">led_driver</a> *driver)</td></tr>
 <tr class="memdesc:a2f9663b913c50b60cd3db763c8f89d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">registers a led driver in ledd  <a href="#a2f9663b913c50b60cd3db763c8f89d73">More...</a><br /></td></tr>
 <tr class="separator:a2f9663b913c50b60cd3db763c8f89d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a099e57d1a0258a2ca296485188725e2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__plugin_8h.html#a099e57d1a0258a2ca296485188725e2b">led_driver_tick_all_drivers</a> (void)</td></tr>
+<tr class="memdesc:a099e57d1a0258a2ca296485188725e2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">notifies all the drivers that all the set_value calls have been performed during this tick  <a href="#a099e57d1a0258a2ca296485188725e2b">More...</a><br /></td></tr>
+<tr class="separator:a099e57d1a0258a2ca296485188725e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae6ba6b0cbdb28afec0a8ce92154939e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ledd__plugin_8h.html#aae6ba6b0cbdb28afec0a8ce92154939e">led_driver_unregister</a> (const struct <a class="el" href="structled__driver.html">led_driver</a> *driver)</td></tr>
 <tr class="memdesc:aae6ba6b0cbdb28afec0a8ce92154939e"><td class="mdescLeft">&#160;</td><td class="mdescRight">un-registers a led driver from ledd  <a href="#aae6ba6b0cbdb28afec0a8ce92154939e">More...</a><br /></td></tr>
 <tr class="separator:aae6ba6b0cbdb28afec0a8ce92154939e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,9 +199,13 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Public API header for the implementation of ledd plugins. </p>
-<dl class="section date"><dt>Date</dt><dd>13 avr. 2016 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>ncarrier </dd></dl>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2016 Parrot S.A. </dd></dl>
+<p>Copyright (c) 2016 Parrot S.A. All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p><ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the Parrot Company nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE PARROT COMPANY BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a327bcd42c861ce4ba859c37a42f0fa60"></a>
 <div class="memitem">
@@ -429,6 +438,24 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, errno-compatible negative value on error </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a099e57d1a0258a2ca296485188725e2b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void led_driver_tick_all_drivers </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>notifies all the drivers that all the set_value calls have been performed during this tick </p>
 
 </div>
 </div>
@@ -708,7 +735,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 26 2016 11:59:35 for ledd_plugins by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 29 2016 15:51:10 for ledd_plugins by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

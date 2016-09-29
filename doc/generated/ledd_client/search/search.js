@@ -12,7 +12,8 @@ var indexSectionsWithContent =
   2: "l",
   3: "l",
   4: "c",
-  5: "l"
+  5: "l",
+  6: "l"
 };
 
 var indexSectionNames =
@@ -22,7 +23,8 @@ var indexSectionNames =
   2: "files",
   3: "functions",
   4: "variables",
-  5: "typedefs"
+  5: "typedefs",
+  6: "defines"
 };
 
 function convertToId(search)

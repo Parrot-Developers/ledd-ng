@@ -114,6 +114,9 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a35637ed19de4ad2dc276c5c7025e401a"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structled__driver__ops.html#a35637ed19de4ad2dc276c5c7025e401a">process_events</a> )(struct <a class="el" href="structled__driver.html">led_driver</a> *driver, int events)</td></tr>
 <tr class="memdesc:a35637ed19de4ad2dc276c5c7025e401a"><td class="mdescLeft">&#160;</td><td class="mdescRight">if the driver want to register himself in ledd's fd event loop, this callback must not NULL and will be triggered each time a read (or write, according to <a class="el" href="structled__driver.html#a786614c15b681950ba03ff951c9353f7">led_driver.rw</a>) event is reported on <a class="el" href="structled__driver.html#a26a996699abd2481103b450be4c099d0">led_driver.fd</a>  <a href="#a35637ed19de4ad2dc276c5c7025e401a">More...</a><br /></td></tr>
 <tr class="separator:a35637ed19de4ad2dc276c5c7025e401a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea5a25fbec106a5de22c5ccd2b5f5a5"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structled__driver__ops.html#a9ea5a25fbec106a5de22c5ccd2b5f5a5">tick</a> )(struct <a class="el" href="structled__driver.html">led_driver</a> *driver)</td></tr>
+<tr class="memdesc:a9ea5a25fbec106a5de22c5ccd2b5f5a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback notified when all the set_value callbacks have been called for all the leds channels registered in ledd for any driver. Allows drivers to pack their commands to limit writes.  <a href="#a9ea5a25fbec106a5de22c5ccd2b5f5a5">More...</a><br /></td></tr>
+<tr class="separator:a9ea5a25fbec106a5de22c5ccd2b5f5a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>operations for implementing a led driver </p>
@@ -205,13 +208,33 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9ea5a25fbec106a5de22c5ccd2b5f5a5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">led_driver_ops::tick</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>callback notified when all the set_value callbacks have been called for all the leds channels registered in ledd for any driver. Allows drivers to pack their commands to limit writes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">driver</td><td>led driver notified of the end of the current tick </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>ledd_plugins/include/<a class="el" href="ledd__plugin_8h_source.html">ledd_plugin.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 26 2016 11:59:36 for ledd_plugins by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Sep 29 2016 15:51:10 for ledd_plugins by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>
