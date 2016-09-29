@@ -29,7 +29,7 @@ run on a pc, simulating a tri-color led with a gtk window.
 
         mkdir ledd
         cd ledd
-        wget -O - https://raw.githubusercontent.com/ncarrier/ledd/master/doc/sources | parallel git clone
+        wget -O - https://raw.githubusercontent.com/Parrot-Developers/ledd-ng/master/doc/sources | parallel git clone
 
 3. setup convenient environment variables for the build
 
