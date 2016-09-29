@@ -40,6 +40,7 @@ if [ ! -d doc -o ! -d ledd_plugins ]; then
 	exit 1
 fi
 
+rm -rf doc/generated/
 mkdir -p doc/generated/
 for f in intro_outro.gif intro_outro_repetitions.png markdown.css toc.js; do
 	cp doc/${f} doc/generated/${f}
