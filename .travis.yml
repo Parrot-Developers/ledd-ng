@@ -1,0 +1,30 @@
+sudo: true
+dist: trusty
+language: c
+compiler:
+  - gcc
+addons:
+  apt:
+    packages:
+    - libcunit1-dev
+    - parallel
+    - git
+    - python3
+    - make
+    - gcc
+    - pkg-config
+    - g++ 
+    - liblua5.2-dev
+    - linux-headers-$(uname -r)
+    - lua5.2
+before_script:
+  - cd ..
+  - ls
+  - pwd
+  - git config --global user.email "ledd-ng@travis.org"
+  - git config --global user.name "ledd-ng build on Travis"
+  - git config --global color.ui true
+  - for s in $(cat ledd-ng/doc/sources | grep -v ledd-ng); do git clone $s; done
+script:
+  - ALCHEMY_HOME=$PWD/alchemy/ ALCHEMY_USE_COLORS=1 ALCHEMY_WORKSPACE_DIR=$PWD ./alchemy/scripts/alchemake all final -j 5 V=1
+
