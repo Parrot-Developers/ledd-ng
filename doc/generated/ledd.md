@@ -34,7 +34,7 @@ run on a pc, simulating a tri-color led with a gtk window.
 
         mkdir ledd
         cd ledd
-        wget -O - https://raw.githubusercontent.com/ncarrier/ledd/master/doc/sources | parallel git clone
+        wget -O - https://raw.githubusercontent.com/Parrot-Developers/ledd-ng/master/doc/sources | parallel git clone
 
 3. setup convenient environment variables for the build
 
@@ -56,8 +56,8 @@ run on a pc, simulating a tri-color led with a gtk window.
 
         ledd-ng ./global.conf &
 
-If problems arise, increase the verbosity by setting the environment variable
-*ULOG_LEVEL=D* and adapt the configuration.
+   If problems arise, increase the verbosity by setting the environment variable
+   *ULOG_LEVEL=D* and adapt the configuration.
 
 8. in another window, launch the socket driver python example client in
 background
@@ -68,7 +68,7 @@ background
 
         ldc set_pattern color_rotation false  
 
-and see the result in the client's window.
+   and see the result in the client's window.
 
 10. then you can quit ledd with
 
