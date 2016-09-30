@@ -1,5 +1,7 @@
 # ledd - led driving daemon
 
+![Current travis build status](https://travis-ci.org/ncarrier/ledd-ng.svg?branch=master)
+
 ## Overview
 
 Ledd is a daemon responsible of controlling the leds of a product.
