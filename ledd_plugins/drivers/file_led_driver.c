@@ -94,11 +94,11 @@ static void file_channel_destroy(struct led_channel *channel)
 {
 	struct file_led_channel *file_channel =
 			to_file_led_channel_from_channel(channel);
-	struct file_led_driver *file_driver =
-			to_file_led_driver(channel->led->driver);
+	struct file_led_driver *file_driver;
 
 	if (channel == NULL)
 		return;
+	file_driver = to_file_led_driver(channel->led->driver);
 
 	rs_dll_remove(&file_driver->channels, &file_channel->node);
 	free(file_channel->label);
