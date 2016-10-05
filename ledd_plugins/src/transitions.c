@@ -104,7 +104,7 @@ const struct transition *transition_get(uint16_t id)
 	unsigned i;
 
 	for (i = 0; i < UT_ARRAY_SIZE(transitions)
-			|| transitions[i].compute == NULL; i++)
+			&& transitions[i].compute != NULL; i++)
 		if (id == transitions[i].id)
 			return transitions + i;
 
