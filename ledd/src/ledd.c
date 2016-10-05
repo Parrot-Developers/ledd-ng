@@ -264,6 +264,7 @@ int ledd_init_impl(const char *global_config, bool skip_plugins)
 	}
 	address = global_get_address();
 	ULOGI("ledd listening on address %s", address);
+	/* coverity[overrun-buffer-val] */
 	ret = pomp_addr_parse(address, &addr.addr_sock, &addrlen);
 	if (ret < 0) {
 		ULOGE("pomp_addr_parse(%s): %s", address, strerror(-ret));

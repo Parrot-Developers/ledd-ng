@@ -72,6 +72,7 @@ static int read_channel(lua_State *l, const char *led_id,
 	}
 	lua_pop(l, 1);
 
+	/* coverity[var_deref_model] */
 	ret = led_channel_new(led_id, channel_id, parameters);
 	if (ret != 0)
 		config_error(l, -ret, "led_channel_new");

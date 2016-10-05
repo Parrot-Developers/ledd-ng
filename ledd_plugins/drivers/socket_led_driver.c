@@ -150,6 +150,7 @@ static int init_pomp_server(struct socket_led_driver *driver,
 		return ret;
 	}
 
+	/* coverity[overrun-buffer-val] */
 	ret = pomp_addr_parse(address, &addr.addr_sock, &addrlen);
 	if (ret < 0) {
 		ULOGE("pomp_addr_parse(%s): %s", address, strerror(-ret));

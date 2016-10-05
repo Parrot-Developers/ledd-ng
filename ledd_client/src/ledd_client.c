@@ -145,6 +145,7 @@ int ledd_client_connect(struct ledd_client *client)
 	} addr;
 	uint32_t addrlen = sizeof(addr.addr_str);
 
+	/* coverity[overrun-buffer-val] */
 	ret = pomp_addr_parse(client->address, &addr.addr_sock, &addrlen);
 	if (ret < 0)
 		return ret;
