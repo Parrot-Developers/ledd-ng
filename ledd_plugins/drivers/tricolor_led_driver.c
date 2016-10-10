@@ -174,30 +174,39 @@ static void tricolor_color_from_hsv(struct tricolor_color *color,
 
 static int tricolor_set_value(struct led_channel *c, uint8_t value)
 {
-	int ret;
 	struct tricolor_led_channel *channel = to_tricolor_led_channel(c);
-	struct tricolor_led *led = to_tricolor_led(channel);
-	struct tricolor_color color;
-	char rgb_led_id[0x100];
 
 	channel->value = value;
 
-	tricolor_color_from_hsv(&color, led->hue.value, led->saturation.value,
-			led->value.value);
+	return 0;
+}
 
-	snprintf(rgb_led_id, 0x100, "%s_rgb", c->led->id);
-	ret = led_driver_set_value(rgb_led_id, "red", color.red);
-	if (ret < 0) {
-		ULOGE("led_driver_set_value(red, %"PRIu8, color.red);
-		return ret;
-	}
-	ret = led_driver_set_value(rgb_led_id, "green", color.green);
-	if (ret < 0) {
-		ULOGE("led_driver_set_value(green, %"PRIu8, color.green);
-		return ret;
+static void tricolor_tick(struct led_driver *driver)
+{
+	int ret;
+	struct tricolor_led_driver *d = to_tricolor_led_driver(driver);
+	struct rs_node *node = NULL;
+	struct tricolor_led *led;
+	struct tricolor_color c;
+	char rgb_led_id[0x100];
+
+	while ((node = rs_dll_next_from(&d->leds, node))) {
+		led = to_tricolor_led_from_node(node);
+		tricolor_color_from_hsv(&c, led->hue.value,
+				led->saturation.value, led->value.value);
+		snprintf(rgb_led_id, 0x100, "%s_rgb", led->led_id);
+
+		ret = led_driver_set_value(rgb_led_id, "red", c.red);
+		if (ret < 0)
+			ULOGE("led_driver_set_value(red, %"PRIu8, c.red);
+		ret = led_driver_set_value(rgb_led_id, "green", c.green);
+		if (ret < 0)
+			ULOGE("led_driver_set_value(green, %"PRIu8, c.green);
+		ret = led_driver_set_value(rgb_led_id, "blue", c.blue);
+		if (ret < 0)
+			ULOGE("led_driver_set_value(green, %"PRIu8, c.green);
 	}
 
-	return led_driver_set_value(rgb_led_id, "blue", color.blue);
 }
 
 static void tricolor_led_destroy(struct tricolor_led *led)
@@ -232,6 +241,7 @@ static struct tricolor_led_driver tricolor_led_driver = {
 			.channel_new = tricolor_channel_new,
 			.channel_destroy = tricolor_channel_destroy,
 			.set_value = tricolor_set_value,
+			.tick = tricolor_tick,
 		},
 	},
 };
